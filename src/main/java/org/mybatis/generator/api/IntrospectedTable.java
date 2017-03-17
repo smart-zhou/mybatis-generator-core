@@ -15,6 +15,8 @@
  */
 package org.mybatis.generator.api;
 
+import org.mybatis.generator.api.dom.java.CompilationUnit;
+import org.mybatis.generator.codegen.AbstractJavaGenerator;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.config.GeneratedKey;
 import org.mybatis.generator.config.JavaClientGeneratorConfiguration;
@@ -48,7 +50,7 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
  * 
  */
 public abstract class IntrospectedTable {
-    
+
     /**
      * The Enum TargetRuntime.
      */
@@ -1557,6 +1559,22 @@ public abstract class IntrospectedTable {
      * @return the list of generated Java files for this table
      */
     public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
+
+
+    protected void buildGeneratedJavaFiles(List<AbstractJavaGenerator> javaGenerators, String property, List<GeneratedJavaFile> answer) {
+        for (AbstractJavaGenerator javaGenerator : javaGenerators) {
+            List<CompilationUnit> compilationUnits = javaGenerator
+                    .getCompilationUnits();
+            for (CompilationUnit compilationUnit : compilationUnits) {
+                GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
+                        context.getJavaModelGeneratorConfiguration()
+                                .getTargetProject(),
+                        context.getProperty(property),
+                        context.getJavaFormatter());
+                answer.add(gjf);
+            }
+        }
+    }
 
     /**
      * This method should return a list of generated XML files related to this

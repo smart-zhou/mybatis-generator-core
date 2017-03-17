@@ -15,14 +15,10 @@
  */
 package org.mybatis.generator.codegen.ibatis2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.ProgressCallback;
-import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.codegen.AbstractGenerator;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;
@@ -39,6 +35,9 @@ import org.mybatis.generator.codegen.ibatis2.model.RecordWithBLOBsGenerator;
 import org.mybatis.generator.codegen.ibatis2.sqlmap.SqlMapGenerator;
 import org.mybatis.generator.config.PropertyRegistry;
 import org.mybatis.generator.internal.ObjectFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -145,33 +144,8 @@ public class IntrospectedTableIbatis2Java2Impl extends IntrospectedTable {
     @Override
     public List<GeneratedJavaFile> getGeneratedJavaFiles() {
         List<GeneratedJavaFile> answer = new ArrayList<GeneratedJavaFile>();
-
-        for (AbstractJavaGenerator javaGenerator : javaModelGenerators) {
-            List<CompilationUnit> compilationUnits = javaGenerator
-                    .getCompilationUnits();
-            for (CompilationUnit compilationUnit : compilationUnits) {
-                GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
-                        context.getJavaModelGeneratorConfiguration()
-                                .getTargetProject(),
-                                context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
-                                context.getJavaFormatter());
-                answer.add(gjf);
-            }
-        }
-
-        for (AbstractJavaGenerator javaGenerator : daoGenerators) {
-            List<CompilationUnit> compilationUnits = javaGenerator
-                    .getCompilationUnits();
-            for (CompilationUnit compilationUnit : compilationUnits) {
-                GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit,
-                        context.getJavaClientGeneratorConfiguration()
-                                .getTargetProject(),
-                                context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
-                                context.getJavaFormatter());
-                answer.add(gjf);
-            }
-        }
-
+        buildGeneratedJavaFiles(javaModelGenerators, PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING, answer);
+        buildGeneratedJavaFiles(daoGenerators, PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING, answer);
         return answer;
     }
 

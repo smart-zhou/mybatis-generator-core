@@ -44,6 +44,9 @@ public class TableConfiguration extends PropertyHolder {
     /** The select by primary key statement enabled. */
     private boolean selectByPrimaryKeyStatementEnabled;
 
+    /** The select by param statement enabled. */
+    private boolean selectByParamStatementEnabled;
+
     /** The select by example statement enabled. */
     private boolean selectByExampleStatementEnabled;
 
@@ -137,6 +140,7 @@ public class TableConfiguration extends PropertyHolder {
         deleteByExampleStatementEnabled = false;
         countByExampleStatementEnabled = false;
         updateByExampleStatementEnabled = false;
+        selectByParamStatementEnabled = true;
     }
 
     /**
@@ -422,6 +426,7 @@ public class TableConfiguration extends PropertyHolder {
                 || deleteByExampleStatementEnabled
                 || deleteByPrimaryKeyStatementEnabled
                 || countByExampleStatementEnabled
+                || selectByParamStatementEnabled
                 || updateByExampleStatementEnabled;
     }
 
@@ -664,6 +669,11 @@ public class TableConfiguration extends PropertyHolder {
                     "enableUpdateByExample", "false")); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+        if (!selectByParamStatementEnabled) {
+            xmlElement.addAttribute(new Attribute(
+                    "enableSelectByParam", "false"));
+        }
+
         if (stringHasValue(selectByPrimaryKeyQueryId)) {
             xmlElement.addAttribute(new Attribute(
                     "selectByPrimaryKeyQueryId", selectByPrimaryKeyQueryId)); //$NON-NLS-1$
@@ -797,6 +807,14 @@ public class TableConfiguration extends PropertyHolder {
     public void setUpdateByExampleStatementEnabled(
             boolean updateByExampleStatementEnabled) {
         this.updateByExampleStatementEnabled = updateByExampleStatementEnabled;
+    }
+
+    public boolean isSelectByParamStatementEnabled() {
+        return selectByParamStatementEnabled;
+    }
+
+    public void setSelectByParamStatementEnabled(boolean selectByParamStatementEnabled) {
+        this.selectByParamStatementEnabled = selectByParamStatementEnabled;
     }
 
     /**

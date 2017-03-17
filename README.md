@@ -19,3 +19,11 @@
   * 修改数据库表配置信息,需要生成哪些表对应的代码就配置哪些表
 * 用Maven打包会生成一个 *-bundle.zip 文件.解压后进入sbin目录
 * 选择对应的执行文件,windows下执行run_mysql.bat,linux下执行run_mysql.sh
+
+### 调试说明
+
+* 修改sbin目录下的generatorConfig_mysql.xml
+  * 修改数据库连接信息
+  * 修改数据库表配置信息,需要生成哪些表对应的代码就配置哪些表
+* 增加运行参数 -configfile generatorConfig_mysql.xml -t -overwrite
+* 运行 ShellRunner里的main方法,要调试可以直接打断点

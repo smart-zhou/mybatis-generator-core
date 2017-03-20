@@ -83,6 +83,11 @@ public class RowBoundsPlugin extends PluginAdapter {
     }
 
     @Override
+    public boolean sqlMapSelectByParamElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
+        return true;
+    }
+
+    @Override
     public boolean sqlMapSelectByExampleWithBLOBsElementGenerated(
             XmlElement element, IntrospectedTable introspectedTable) {
         if (introspectedTable.getTargetRuntime() == TargetRuntime.MYBATIS3) {

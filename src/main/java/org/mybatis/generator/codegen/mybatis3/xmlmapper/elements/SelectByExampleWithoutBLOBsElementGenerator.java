@@ -15,11 +15,11 @@
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
-import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
+
+import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
 
 /**
  * 
@@ -44,8 +44,6 @@ public class SelectByExampleWithoutBLOBsElementGenerator extends
         answer.addAttribute(new Attribute(
                 "resultMap", introspectedTable.getBaseResultMapId())); //$NON-NLS-1$
         answer.addAttribute(new Attribute("parameterType", fqjt)); //$NON-NLS-1$
-
-        context.getCommentGenerator().addComment(answer);
 
         answer.addElement(new TextElement("select")); //$NON-NLS-1$
         XmlElement ifElement = new XmlElement("if"); //$NON-NLS-1$

@@ -53,8 +53,6 @@ public class UpdateByPrimaryKeySelectiveElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType));
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
 
         sb.append("update "); //$NON-NLS-1$

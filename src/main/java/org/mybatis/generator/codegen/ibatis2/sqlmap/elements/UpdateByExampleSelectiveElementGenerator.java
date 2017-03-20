@@ -41,8 +41,6 @@ public class UpdateByExampleSelectiveElementGenerator extends
                 .addAttribute(new Attribute(
                         "id", introspectedTable.getUpdateByExampleSelectiveStatementId())); //$NON-NLS-1$
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
 
         sb.append("update "); //$NON-NLS-1$

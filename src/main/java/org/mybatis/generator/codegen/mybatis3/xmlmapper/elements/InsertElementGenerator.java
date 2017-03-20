@@ -15,9 +15,6 @@
  */
 package org.mybatis.generator.codegen.mybatis3.xmlmapper.elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.OutputUtilities;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -27,6 +24,9 @@ import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities;
 import org.mybatis.generator.config.GeneratedKey;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -60,8 +60,6 @@ public class InsertElementGenerator extends AbstractXmlElementGenerator {
 
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterType.getFullyQualifiedName()));
-
-        context.getCommentGenerator().addComment(answer);
 
         GeneratedKey gk = introspectedTable.getGeneratedKey();
         if (gk != null) {

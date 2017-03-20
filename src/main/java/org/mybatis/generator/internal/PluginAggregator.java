@@ -15,15 +15,11 @@
  */
 package org.mybatis.generator.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.GeneratedXmlFile;
-import org.mybatis.generator.api.Plugin;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
+import org.mybatis.generator.api.Plugin;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.Interface;
 import org.mybatis.generator.api.dom.java.Method;
@@ -31,6 +27,10 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.config.Context;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This class is for internal use only. It contains a list of plugins for the
@@ -259,6 +259,20 @@ public final class PluginAggregator implements Plugin {
 
         for (Plugin plugin : plugins) {
             if (!plugin.sqlMapSelectByExampleWithoutBLOBsElementGenerated(
+                    element, introspectedTable)) {
+                rc = false;
+                break;
+            }
+        }
+
+        return rc;
+    }
+
+    public boolean sqlMapSelectByParamElementGenerated( XmlElement element, IntrospectedTable introspectedTable) {
+        boolean rc = true;
+
+        for (Plugin plugin : plugins) {
+            if (!plugin.sqlMapSelectByParamElementGenerated(
                     element, introspectedTable)) {
                 rc = false;
                 break;
@@ -558,6 +572,21 @@ public final class PluginAggregator implements Plugin {
 
         for (Plugin plugin : plugins) {
             if (!plugin.clientSelectAllMethodGenerated(method,
+                    interfaze, introspectedTable)) {
+                rc = false;
+                break;
+            }
+        }
+
+        return rc;
+    }
+
+    public boolean clientSelectByParamMethodGenerated(Method method,
+            Interface interfaze, IntrospectedTable introspectedTable) {
+        boolean rc = true;
+
+        for (Plugin plugin : plugins) {
+            if (!plugin.clientSelectByParamMethodGenerated(method,
                     interfaze, introspectedTable)) {
                 rc = false;
                 break;

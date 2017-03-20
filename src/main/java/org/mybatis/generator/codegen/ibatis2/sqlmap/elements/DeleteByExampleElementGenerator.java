@@ -40,8 +40,6 @@ public class DeleteByExampleElementGenerator extends
         answer.addAttribute(new Attribute(
                 "parameterClass", introspectedTable.getExampleType())); //$NON-NLS-1$
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
         sb.append("delete from "); //$NON-NLS-1$
         sb.append(introspectedTable

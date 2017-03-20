@@ -49,8 +49,6 @@ public class UpdateByPrimaryKeyWithoutBLOBsElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 introspectedTable.getBaseRecordType()));
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
         sb.append("update "); //$NON-NLS-1$
         sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());

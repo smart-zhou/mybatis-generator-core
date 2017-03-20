@@ -15,13 +15,13 @@
  */
 package org.mybatis.generator.codegen.ibatis2.sqlmap.elements;
 
-import java.util.Iterator;
-
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.TextElement;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 import org.mybatis.generator.codegen.ibatis2.Ibatis2FormattingUtilities;
+
+import java.util.Iterator;
 
 /**
  * 
@@ -40,8 +40,6 @@ public class BaseColumnListElementGenerator extends AbstractXmlElementGenerator 
 
         answer.addAttribute(new Attribute("id", //$NON-NLS-1$
                 introspectedTable.getBaseColumnListId()));
-
-        context.getCommentGenerator().addComment(answer);
 
         StringBuilder sb = new StringBuilder();
         Iterator<IntrospectedColumn> iter = introspectedTable

@@ -40,8 +40,6 @@ public class CountByExampleElementGenerator extends AbstractXmlElementGenerator 
                 "parameterClass", introspectedTable.getExampleType())); //$NON-NLS-1$
         answer.addAttribute(new Attribute("resultClass", "java.lang.Long")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
         sb.append("select count(*) from "); //$NON-NLS-1$
         sb.append(introspectedTable

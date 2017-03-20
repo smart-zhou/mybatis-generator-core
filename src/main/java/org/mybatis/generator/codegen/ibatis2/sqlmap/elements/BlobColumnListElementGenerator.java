@@ -41,8 +41,6 @@ public class BlobColumnListElementGenerator extends AbstractXmlElementGenerator 
         answer.addAttribute(new Attribute("id", //$NON-NLS-1$
                 introspectedTable.getBlobColumnListId()));
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
 
         Iterator<IntrospectedColumn> iter = introspectedTable.getBLOBColumns()

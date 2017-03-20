@@ -58,8 +58,6 @@ public class DeleteByPrimaryKeyElementGenerator extends
         answer.addAttribute(new Attribute("parameterType", //$NON-NLS-1$
                 parameterClass));
 
-        context.getCommentGenerator().addComment(answer);
-
         StringBuilder sb = new StringBuilder();
         sb.append("delete from "); //$NON-NLS-1$
         sb.append(introspectedTable.getFullyQualifiedTableNameAtRuntime());

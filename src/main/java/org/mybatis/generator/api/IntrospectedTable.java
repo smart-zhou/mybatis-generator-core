@@ -138,6 +138,9 @@ public abstract class IntrospectedTable {
         
         /** The attr select by primary key statement id. */
         ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID,
+
+        /** The attr select by param statement id. */
+        ATTR_SELECT_BY_PARAM_STATEMENT_ID,
         
         /** The attr update by example statement id. */
         ATTR_UPDATE_BY_EXAMPLE_STATEMENT_ID,
@@ -797,6 +800,7 @@ public abstract class IntrospectedTable {
         setSelectByExampleStatementId("selectByExample"); //$NON-NLS-1$
         setSelectByExampleWithBLOBsStatementId("selectByExampleWithBLOBs"); //$NON-NLS-1$
         setSelectByPrimaryKeyStatementId("selectByPrimaryKey"); //$NON-NLS-1$
+        setSelectByParamStatementId("setSelectByParam");
         setUpdateByExampleStatementId("updateByExample"); //$NON-NLS-1$
         setUpdateByExampleSelectiveStatementId("updateByExampleSelective"); //$NON-NLS-1$
         setUpdateByExampleWithBLOBsStatementId("updateByExampleWithBLOBs"); //$NON-NLS-1$
@@ -959,6 +963,11 @@ public abstract class IntrospectedTable {
     public void setSelectByPrimaryKeyStatementId(String s) {
         internalAttributes.put(
                 InternalAttribute.ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID, s);
+    }
+
+    public void setSelectByParamStatementId(String s) {
+        internalAttributes.put(
+                InternalAttribute.ATTR_SELECT_BY_PARAM_STATEMENT_ID, s);
     }
 
     /**
@@ -1178,6 +1187,16 @@ public abstract class IntrospectedTable {
     public String getSelectByPrimaryKeyStatementId() {
         return internalAttributes
                 .get(InternalAttribute.ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID);
+    }
+
+    /**
+     * Gets the select by param statement id.
+     *
+     * @return the select by param statement id
+     */
+    public String getSelectByParamStatementId() {
+        return internalAttributes
+                .get(InternalAttribute.ATTR_SELECT_BY_PARAM_STATEMENT_ID);
     }
 
     /**

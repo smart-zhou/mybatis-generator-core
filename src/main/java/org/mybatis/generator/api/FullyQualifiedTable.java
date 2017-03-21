@@ -15,14 +15,14 @@
  */
 package org.mybatis.generator.api;
 
+import org.mybatis.generator.config.Context;
+
 import static org.mybatis.generator.internal.util.EqualsUtil.areEqual;
 import static org.mybatis.generator.internal.util.HashCodeUtil.SEED;
 import static org.mybatis.generator.internal.util.HashCodeUtil.hash;
 import static org.mybatis.generator.internal.util.JavaBeansUtil.getCamelCaseString;
 import static org.mybatis.generator.internal.util.StringUtility.composeFullyQualifiedTableName;
 import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
-
-import org.mybatis.generator.config.Context;
 
 /**
  * The Class FullyQualifiedTable.
@@ -177,11 +177,7 @@ public class FullyQualifiedTable {
     public String getFullyQualifiedTableNameAtRuntime() {
         StringBuilder localCatalog = new StringBuilder();
         if (!ignoreQualifiersAtRuntime) {
-            if (stringHasValue(runtimeCatalog)) {
-                localCatalog.append(runtimeCatalog);
-            } else if (stringHasValue(introspectedCatalog)) {
-                localCatalog.append(introspectedCatalog);
-            }
+            doStringBuilderAppend(localCatalog, runtimeCatalog, introspectedCatalog);
         }
         if (localCatalog.length() > 0) {
             addDelimiters(localCatalog);
@@ -189,11 +185,7 @@ public class FullyQualifiedTable {
 
         StringBuilder localSchema = new StringBuilder();
         if (!ignoreQualifiersAtRuntime) {
-            if (stringHasValue(runtimeSchema)) {
-                localSchema.append(runtimeSchema);
-            } else if (stringHasValue(introspectedSchema)) {
-                localSchema.append(introspectedSchema);
-            }
+            doStringBuilderAppend(localSchema, runtimeSchema, introspectedSchema);
         }
         if (localSchema.length() > 0) {
             addDelimiters(localSchema);
@@ -335,25 +327,27 @@ public class FullyQualifiedTable {
     public String getSubPackageForClientOrSqlMap(boolean isSubPackagesEnabled) {
         StringBuilder sb = new StringBuilder();
         if (!ignoreQualifiersAtRuntime && isSubPackagesEnabled) {
-            if (stringHasValue(runtimeCatalog)) {
-                sb.append('.');
-                sb.append(runtimeCatalog.toLowerCase());
-            } else if (stringHasValue(introspectedCatalog)) {
-                sb.append('.');
-                sb.append(introspectedCatalog.toLowerCase());
-            }
-
-            if (stringHasValue(runtimeSchema)) {
-                sb.append('.');
-                sb.append(runtimeSchema.toLowerCase());
-            } else if (stringHasValue(introspectedSchema)) {
-                sb.append('.');
-                sb.append(introspectedSchema.toLowerCase());
-            }
+            doStringBuilderAppend(sb, runtimeCatalog, introspectedCatalog);
+            doStringBuilderAppend(sb, runtimeSchema, introspectedSchema);
         }
-        
         // TODO - strip characters that are not valid in package names
         return sb.toString();
+    }
+
+    /**
+     * StringBuilder追加字符串
+     * @param sb StringBuilder
+     * @param first 优先追加
+     * @param lag 滞后追加
+     */
+    private void doStringBuilderAppend(StringBuilder sb, String first, String lag) {
+        if (stringHasValue(first)) {
+            sb.append('.');
+            sb.append(first.toLowerCase());
+        } else if (stringHasValue(lag)) {
+            sb.append('.');
+            sb.append(lag.toLowerCase());
+        }
     }
 
     /**

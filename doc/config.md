@@ -1,0 +1,1 @@
+# generatorConfig_*.xml 说明

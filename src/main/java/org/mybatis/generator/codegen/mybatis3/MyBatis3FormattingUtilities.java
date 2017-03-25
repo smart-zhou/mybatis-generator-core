@@ -59,11 +59,6 @@ public class MyBatis3FormattingUtilities {
             IntrospectedColumn introspectedColumn, String prefix) {
         StringBuilder sb = new StringBuilder();
 
-        if (stringHasValue(introspectedColumn.getReplaceName())) {
-            sb.append(introspectedColumn.getReplaceName());
-            return sb.toString();
-        }
-
         sb.append("#{"); //$NON-NLS-1$
         sb.append(introspectedColumn.getJavaProperty(prefix));
         sb.append(",jdbcType="); //$NON-NLS-1$
@@ -77,6 +72,15 @@ public class MyBatis3FormattingUtilities {
         sb.append('}');
 
         return sb.toString();
+    }
+
+    public static String getParameterClause(IntrospectedColumn introspectedColumn, String prefix, boolean withReplace) {
+        if (withReplace && stringHasValue(introspectedColumn.getReplaceName())) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(introspectedColumn.getReplaceName());
+            return sb.toString();
+        }
+        return getParameterClause(introspectedColumn, prefix);
     }
 
     /**

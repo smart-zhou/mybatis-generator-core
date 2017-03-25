@@ -15,15 +15,6 @@
  */
 package org.mybatis.generator.codegen.mybatis3.javamapper.elements.annotated;
 
-import static org.mybatis.generator.api.dom.OutputUtilities.javaIndent;
-import static org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities.getEscapedColumnName;
-import static org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities.getParameterClause;
-import static org.mybatis.generator.internal.util.StringUtility.escapeStringForJava;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.Interface;
@@ -31,6 +22,15 @@ import org.mybatis.generator.api.dom.java.Method;
 import org.mybatis.generator.codegen.mybatis3.ListUtilities;
 import org.mybatis.generator.codegen.mybatis3.javamapper.elements.InsertMethodGenerator;
 import org.mybatis.generator.config.GeneratedKey;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.mybatis.generator.api.dom.OutputUtilities.javaIndent;
+import static org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities.getEscapedColumnName;
+import static org.mybatis.generator.codegen.mybatis3.MyBatis3FormattingUtilities.getParameterClause;
+import static org.mybatis.generator.internal.util.StringUtility.escapeStringForJava;
 
 /**
  * 
@@ -70,7 +70,7 @@ public class AnnotatedInsertMethodGenerator extends
             IntrospectedColumn introspectedColumn = iter.next();
 
             insertClause.append(escapeStringForJava(getEscapedColumnName(introspectedColumn)));
-            valuesClause.append(getParameterClause(introspectedColumn));
+            valuesClause.append(getParameterClause(introspectedColumn, null, true));
             hasFields = true;
             if (iter.hasNext()) {
                 insertClause.append(", "); //$NON-NLS-1$

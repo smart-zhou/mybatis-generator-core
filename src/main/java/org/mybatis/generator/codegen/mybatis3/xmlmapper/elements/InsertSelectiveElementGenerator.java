@@ -102,7 +102,7 @@ public class InsertSelectiveElementGenerator extends
 
                 sb.setLength(0);
                 sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
+                    .getParameterClause(introspectedColumn, null, true));
                 sb.append(',');
                 valuesTrimElement.addElement(new TextElement(sb.toString()));
 
@@ -132,7 +132,7 @@ public class InsertSelectiveElementGenerator extends
 
             sb.setLength(0);
             sb.append(MyBatis3FormattingUtilities
-                    .getParameterClause(introspectedColumn));
+                    .getParameterClause(introspectedColumn, null, true));
             sb.append(',');
             valuesNotNullElement.addElement(new TextElement(sb.toString()));
             valuesTrimElement.addElement(valuesNotNullElement);

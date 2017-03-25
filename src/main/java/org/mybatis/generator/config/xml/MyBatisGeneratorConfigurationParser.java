@@ -400,6 +400,7 @@ public class MyBatisGeneratorConfigurationParser {
         String javaType = attributes.getProperty("javaType"); //$NON-NLS-1$
         String jdbcType = attributes.getProperty("jdbcType"); //$NON-NLS-1$
         String typeHandler = attributes.getProperty("typeHandler"); //$NON-NLS-1$
+        String replaceName = attributes.getProperty("replaceName"); //$NON-NLS-1$
         String delimitedColumnName = attributes
                 .getProperty("delimitedColumnName"); //$NON-NLS-1$
         String isGeneratedAlways = attributes.getProperty("isGeneratedAlways"); //$NON-NLS-1$
@@ -420,6 +421,10 @@ public class MyBatisGeneratorConfigurationParser {
 
         if (stringHasValue(typeHandler)) {
             co.setTypeHandler(typeHandler);
+        }
+
+        if (stringHasValue(replaceName)) {
+            co.setReplaceName(replaceName);
         }
 
         if (stringHasValue(delimitedColumnName)) {

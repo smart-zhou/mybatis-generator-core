@@ -59,7 +59,11 @@ public class MyBatis3FormattingUtilities {
             IntrospectedColumn introspectedColumn, String prefix) {
         StringBuilder sb = new StringBuilder();
 
-        // TODO: 2017/3/17 将配置过的Field的Value用配置信息替换
+        if (stringHasValue(introspectedColumn.getReplaceName())) {
+            sb.append(introspectedColumn.getReplaceName());
+            return sb.toString();
+        }
+
         sb.append("#{"); //$NON-NLS-1$
         sb.append(introspectedColumn.getJavaProperty(prefix));
         sb.append(",jdbcType="); //$NON-NLS-1$

@@ -33,7 +33,9 @@
         </javaClientGenerator>
 
         <!-- 数据库表配置 -->
-        <table tableName="reward_grant" domainObjectName="RewardGrant"></table>
+        <table tableName="reward_grant" domainObjectName="RewardGrant">
+            <columnOverride column="createDate" replaceName="sysdate()"/>
+        </table>
 
     </context>
 </generatorConfiguration>

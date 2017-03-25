@@ -15,12 +15,12 @@
  */
 package org.mybatis.generator.api;
 
-import java.sql.Types;
-import java.util.Properties;
-
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.Context;
 import org.mybatis.generator.internal.util.StringUtility;
+
+import java.sql.Types;
+import java.util.Properties;
 
 /**
  * This class holds information about an introspected column. The class has
@@ -34,6 +34,8 @@ public class IntrospectedColumn {
     protected int jdbcType;
 
     protected String jdbcTypeName;
+
+    private  String replaceName;
 
     protected boolean nullable;
 
@@ -250,6 +252,14 @@ public class IntrospectedColumn {
 
     public void setJdbcTypeName(String jdbcTypeName) {
         this.jdbcTypeName = jdbcTypeName;
+    }
+
+    public String getReplaceName() {
+        return replaceName;
+    }
+
+    public void setReplaceName(String replaceName) {
+        this.replaceName = replaceName;
     }
 
     public FullyQualifiedJavaType getFullyQualifiedJavaType() {

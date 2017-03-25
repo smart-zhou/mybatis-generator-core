@@ -185,6 +185,7 @@
   javaType CDATA #IMPLIED
   jdbcType CDATA #IMPLIED
   typeHandler CDATA #IMPLIED
+  replaceName CDATA #IMPLIED
   isGeneratedAlways CDATA #IMPLIED
   delimitedColumnName CDATA #IMPLIED>
 

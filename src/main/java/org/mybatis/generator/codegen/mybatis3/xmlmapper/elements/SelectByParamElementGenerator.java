@@ -77,8 +77,9 @@ public class SelectByParamElementGenerator extends AbstractXmlElementGenerator {
         StringBuilder sb = new StringBuilder();
         // 主键不做为条件
         // 非主键条件
-        sb.append("where 0 = 0");
-        answer.addElement(new TextElement(sb.toString()));
+        XmlElement whereElement = new XmlElement("where");
+        whereElement.addElement(new TextElement("0 = 0"));
+        answer.addElement(whereElement);
         List<IntrospectedColumn> columns;
         if (isSimple) {
             columns = introspectedTable.getNonPrimaryKeyColumns();
@@ -91,16 +92,14 @@ public class SelectByParamElementGenerator extends AbstractXmlElementGenerator {
             sb.append(introspectedColumn.getJavaProperty());
             sb.append(" != null"); //$NON-NLS-1$
             isNotNullElement.addAttribute(new Attribute("test", sb.toString())); //$NON-NLS-1$
-            answer.addElement(isNotNullElement);
-
+            whereElement.addElement(isNotNullElement);
             sb.setLength(0);
+            sb.append("and ");
             sb.append(MyBatis3FormattingUtilities
                     .getEscapedColumnName(introspectedColumn));
             sb.append(" = "); //$NON-NLS-1$
             sb.append(MyBatis3FormattingUtilities
                     .getParameterClause(introspectedColumn));
-            sb.append(',');
-
             isNotNullElement.addElement(new TextElement(sb.toString()));
         }
     }

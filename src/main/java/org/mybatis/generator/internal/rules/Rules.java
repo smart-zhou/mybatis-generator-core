@@ -66,9 +66,9 @@ public interface Rules {
     boolean generateUpdateByPrimaryKeyWithoutBLOBs();
 
     /**
-     * todo
+     *
      */
-//    boolean generateSelectByParam();
+    boolean generateSelectByParam();
 
     /**
      * Implements the rule for generating the update by primary key with BLOBs

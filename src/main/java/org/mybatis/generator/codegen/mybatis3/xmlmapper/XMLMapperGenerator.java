@@ -243,9 +243,10 @@ public class XMLMapperGenerator extends AbstractXmlGenerator {
     }
 
     protected void addSelectByParamElement(XmlElement parentElement) {
-        // todo
-        AbstractXmlElementGenerator elementGenerator = new SelectByParamElementGenerator(false);
-        initializeAndExecuteGenerator(elementGenerator, parentElement);
+        if (introspectedTable.getRules().generateSelectByParam()) {
+            AbstractXmlElementGenerator elementGenerator = new SelectByParamElementGenerator(false);
+            initializeAndExecuteGenerator(elementGenerator, parentElement);
+        }
     }
 
     private void initializeAndExecuteGenerator(

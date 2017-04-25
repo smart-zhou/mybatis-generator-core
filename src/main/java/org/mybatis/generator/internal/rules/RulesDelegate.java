@@ -156,6 +156,10 @@ public class RulesDelegate implements Rules {
         return rules.generateUpdateByPrimaryKeyWithoutBLOBs();
     }
 
+    public boolean generateSelectByParam() {
+        return rules.generateSelectByParam();
+    }
+
     public IntrospectedTable getIntrospectedTable() {
         return rules.getIntrospectedTable();
     }

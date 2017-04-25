@@ -132,6 +132,13 @@ public abstract class BaseRules implements Rules {
         return rc;
     }
 
+    public boolean generateSelectByParam() {
+        if (isModelOnly) {
+            return false;
+        }
+        return tableConfiguration.isSelectByParamStatementEnabled();
+    }
+
     /**
      * Implements the rule for generating the update by primary key with BLOBs
      * SQL Map element and DAO method. If the table has a primary key as well as

@@ -454,9 +454,10 @@ public abstract class BaseRules implements Rules {
         if (isModelOnly) {
             return false;
         }
-        
-        return generateSelectByPrimaryKey()
-                || generateSelectByExampleWithoutBLOBs();
+
+        return true;
+//        return generateSelectByPrimaryKey()
+//                || generateSelectByExampleWithoutBLOBs();
     }
 
     /* (non-Javadoc)

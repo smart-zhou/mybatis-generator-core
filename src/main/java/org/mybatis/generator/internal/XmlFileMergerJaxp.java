@@ -22,8 +22,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -79,13 +77,7 @@ public class XmlFileMergerJaxp {
             return getMergedSource(new InputSource(new StringReader(generatedXmlFile.getFormattedContent())),
                 new InputSource(new InputStreamReader(new FileInputStream(existingFile), "UTF-8")), //$NON-NLS-1$
                 existingFile.getName());
-        } catch (IOException e) {
-            throw new ShellException(getString("Warning.13", //$NON-NLS-1$
-                    existingFile.getName()), e);
-        } catch (SAXException e) {
-            throw new ShellException(getString("Warning.13", //$NON-NLS-1$
-                    existingFile.getName()), e);
-        } catch (ParserConfigurationException e) {
+        } catch (IOException | SAXException | ParserConfigurationException e) {
             throw new ShellException(getString("Warning.13", //$NON-NLS-1$
                     existingFile.getName()), e);
         }
@@ -115,73 +107,145 @@ public class XmlFileMergerJaxp {
         Element existingRootElement = existingDocument.getDocumentElement();
         Element newRootElement = newDocument.getDocumentElement();
 
+        // to check element attributes and child nodes , then update with the new elements'
+        checkAndUpdateElement(existingRootElement, newRootElement);
+
         // reconcile the root element attributes -
         // take all attributes from the new element and add to the existing
         // element
 
-        // remove all attributes from the existing root element
-        NamedNodeMap attributes = existingRootElement.getAttributes();
-        int attributeCount = attributes.getLength();
-        for (int i = attributeCount - 1; i >= 0; i--) {
-            Node node = attributes.item(i);
-            existingRootElement.removeAttribute(node.getNodeName());
-        }
-
-        // add attributes from the new root node to the old root node
-        attributes = newRootElement.getAttributes();
-        attributeCount = attributes.getLength();
-        for (int i = 0; i < attributeCount; i++) {
-            Node node = attributes.item(i);
-            existingRootElement.setAttribute(node.getNodeName(), node
-                    .getNodeValue());
-        }
-
-        // remove the old generated elements and any
-        // white space before the old nodes
-        List<Node> nodesToDelete = new ArrayList<Node>();
-        NodeList children = existingRootElement.getChildNodes();
-        int length = children.getLength();
-        for (int i = 0; i < length; i++) {
-            Node node = children.item(i);
-            if (isGeneratedNode(node)) {
-                nodesToDelete.add(node);
-            } else if (isWhiteSpace(node)
-                    && isGeneratedNode(children.item(i + 1))) {
-                nodesToDelete.add(node);
-            }
-        }
-
-        for (Node node : nodesToDelete) {
-            existingRootElement.removeChild(node);
-        }
-
-        // add the new generated elements
-        children = newRootElement.getChildNodes();
-        length = children.getLength();
-        Node firstChild = existingRootElement.getFirstChild();
-        for (int i = 0; i < length; i++) {
-            Node node = children.item(i);
-            // don't add the last node if it is only white space
-            if (i == length - 1 && isWhiteSpace(node)) {
-                break;
-            }
-
-            Node newNode = existingDocument.importNode(node, true);
-            if (firstChild == null) {
-                existingRootElement.appendChild(newNode);
-            } else {
-                existingRootElement.insertBefore(newNode, firstChild);
-            }
-        }
+//        // remove all attributes from the existing root element
+//        NamedNodeMap attributes = existingRootElement.getAttributes();
+//        int attributeCount = attributes.getLength();
+//        for (int i = attributeCount - 1; i >= 0; i--) {
+//            Node node = attributes.item(i);
+//            existingRootElement.removeAttribute(node.getNodeName());
+//        }
+//
+//        // add attributes from the new root node to the old root node
+//        attributes = newRootElement.getAttributes();
+//        attributeCount = attributes.getLength();
+//        for (int i = 0; i < attributeCount; i++) {
+//            Node node = attributes.item(i);
+//            existingRootElement.setAttribute(node.getNodeName(), node
+//                    .getNodeValue());
+//        }
+//
+//        // remove the old generated elements and any
+//        // white space before the old nodes
+//        List<Node> nodesToDelete = new ArrayList<Node>();
+//        NodeList children = existingRootElement.getChildNodes();
+//        int length = children.getLength();
+//        for (int i = 0; i < length; i++) {
+//            Node node = children.item(i);
+//            if (isGeneratedNode(node)) {
+//                nodesToDelete.add(node);
+//            } else if (isWhiteSpace(node)
+//                    && isGeneratedNode(children.item(i + 1))) {
+//                nodesToDelete.add(node);
+//            }
+//        }
+//
+//        for (Node node : nodesToDelete) {
+//            existingRootElement.removeChild(node);
+//        }
+//
+//        // add the new generated elements
+//        children = newRootElement.getChildNodes();
+//        length = children.getLength();
+//        Node firstChild = existingRootElement.getFirstChild();
+//        for (int i = 0; i < length; i++) {
+//            Node node = children.item(i);
+//            // don't add the last node if it is only white space
+//            if (i == length - 1 && isWhiteSpace(node)) {
+//                break;
+//            }
+//
+//            Node newNode = existingDocument.importNode(node, true);
+//            if (firstChild == null) {
+//                existingRootElement.appendChild(newNode);
+//            } else {
+//                existingRootElement.insertBefore(newNode, firstChild);
+//            }
+//        }
 
         // pretty print the result
         return prettyPrint(existingDocument);
     }
 
+    private static void checkAndUpdateElement(Element oldElement, Element newElement) throws ShellException {
+        if (oldElement == null || newElement == null) {
+            throw new ShellException("can not process element with null");
+        }
+        if (oldElement.getNodeType() != newElement.getNodeType()) {
+            throw new ShellException("can not process element with different node type");
+        }
+        if (oldElement.getNodeType() == Node.ELEMENT_NODE) {
+            // update with the newer attributes that both exists
+            updateElementAttributes(oldElement, newElement);
+            // update child nodes ,with these nodes ,they all have attribute that named "id" , otherwise we should not update them
+            NodeList newChildren = newElement.getChildNodes();
+            NodeList oldChildren = oldElement.getChildNodes();
+            int length = newChildren.getLength();
+            for (int i = 0; i < length; i++) {
+                if (newChildren.item(i).getNodeType() != Node.ELEMENT_NODE) {
+                    continue;
+                }
+                Element newChild = (Element) newChildren.item(i);
+                Node attr = newChild.getAttributeNode("id");
+                if (attr != null) {
+                    Element oldChild = findElementByAttribute(attr, oldChildren);
+                    if (oldChild == null) {
+                        oldElement.appendChild(newChild);
+                    } else {
+                        updateNode(newChild, oldChild);
+                    }
+                }
+            }
+        } else {
+            // it is not a element node , then update whole node with the newer
+            updateNode(newElement, oldElement);
+        }
+    }
+
+    private static Element findElementByAttribute(Node attr, NodeList nodeList) {
+        int length = nodeList.getLength();
+        for (int i = 0; i < length; i++) {
+            if (nodeList.item(i).getNodeType() != Node.ELEMENT_NODE) {
+                continue;
+            }
+            Element child = (Element) nodeList.item(i);
+            String value = child.getAttribute(attr.getNodeName());
+            if (value != null && value.equals(attr.getNodeValue())) {
+                return child;
+            }
+        }
+        return null;
+    }
+
+    private static void updateElementAttributes(Element oldElement, Element newElement) {
+        NamedNodeMap attributes = newElement.getAttributes();
+        int attributeCount = attributes.getLength();
+        for (int i = attributeCount - 1; i >= 0; i--) {
+            Node node = attributes.item(i);
+            oldElement.setAttribute(node.getNodeName(), node.getNodeValue());
+        }
+    }
+
+    private static void updateNode(Node newNode, Node oldNode) throws ShellException {
+        if (oldNode.getParentNode() == null || newNode.getParentNode() == null) {
+            throw new ShellException("can not replace root node");
+        }
+        Node parent = oldNode.getParentNode();
+        Node tempNode = newNode.cloneNode(true);
+        tempNode = parent.getOwnerDocument().adoptNode(tempNode);
+        parent.replaceChild(tempNode, oldNode);
+//        parent.removeChild(oldNode);
+    }
+
     private static String prettyPrint(Document document) throws ShellException {
         DomWriter dw = new DomWriter();
-        String s = dw.toString(document);
-        return s;
+        return dw.toString(document);
     }
 
     private static boolean isGeneratedNode(Node node) {
@@ -199,7 +263,7 @@ public class XmlFileMergerJaxp {
                 }
             }
 
-            if (rc == false) {
+            if (!rc) {
                 // check for new node format - if the first non-whitespace node
                 // is an XML comment, and the comment includes
                 // one of the old element tags,

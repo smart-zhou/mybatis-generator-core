@@ -78,7 +78,6 @@ public class SelectByParamElementGenerator extends AbstractXmlElementGenerator {
         // 主键不做为条件
         // 非主键条件
         XmlElement whereElement = new XmlElement("where");
-        whereElement.addElement(new TextElement("0 = 0"));
         answer.addElement(whereElement);
         List<IntrospectedColumn> columns;
         if (isSimple) {
